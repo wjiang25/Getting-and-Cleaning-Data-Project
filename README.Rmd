@@ -1,0 +1,31 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r setup, include=FALSE}
+```
+
+
+```{r }
+
+```
+
+1.dowload and unzip the data files from " 
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+
+2.We only need to use the file "subject_test.txt", "X_test.txt", "y_test.txt" in the "test" and "train"
+folder. I also use the "activity_albels.txt" to match activities type to make tables easy to understand.
+
+3.Using read.table to transfer .txt file into data.frame in R, merge test and training data, relabel the headers and split and transfer character type into numbers in order to further analysis.
+
+4.Cleaning data including 564 variables, one for test subject(30 testers), one for test   activities(6,"WALKING","WALKING_UPSTAIRS","WALKING_DOWNSTAIRS","SITTING","STANDING","LAYING"),
+one for labels of those activities, rest are data  data captured in 561 time frame.
+
+5.Group the merged and cleaned data by test object and their activities, use summarize() to find the mean and sd of the data
+
+
+
+
