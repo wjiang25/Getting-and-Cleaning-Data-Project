@@ -1,0 +1,61 @@
+---
+title: "CodeBook"
+author: "You!"
+date: "2023-12-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+```
+
+
+```{r }
+# Load Test data
+v_t <- read.table("/Users/weijiang/Downloads/UCI HAR Dataset 2/test/X_test.txt",sep="\t")
+x_t <- read.table("/Users/weijiang/Downloads/UCI HAR Dataset 2/test/subject_test.txt",sep="\t")
+y_t <- read.table("/Users/weijiang/Downloads/UCI HAR Dataset 2/test/y_test.txt",sep="\t")
+
+# Load Training Data
+v_tr <- read.table("/Users/weijiang/Downloads/UCI HAR Dataset 2/train/X_train.txt",sep="\t")
+x_tr <- read.table("/Users/weijiang/Downloads/UCI HAR Dataset 2/train/subject_train.txt",sep="\t")
+y_tr <- read.table("/Users/weijiang/Downloads/UCI HAR Dataset 2/train/y_train.txt",sep="\t")
+
+# merge training data and test data
+merged_v <- rbind(v_t,v_tr)
+merged_x <- rbind(x_t,x_tr)
+merged_y <- rbind(y_t,y_tr)
+
+# relabel the columns and create a new columns to match activaties type
+merged_label <- cbind(merged_x,merged_y)
+colnames(merged_label) <- c("Subject", "Activity")
+
+lookup_table <- c("WALKING","WALKING_UPSTAIRS","WALKING_DOWNSTAIRS","SITTING","STANDING","LAYING")
+merged_label$Activity_labels <- lookup_table[merged_label[,2]]
+
+# split the data from the test result from character to independent numbers and create a dataframe
+# the columns of the dataframe is 561 test values, rows are 2947 data objects
+value <- apply(merged_v,1,function(x) {merged_v<- strsplit(x, " ")[[1]]})
+value <- lapply(value,function(x) ifelse(x=="", NA,x))
+value <- lapply(value,function(x) na.omit(x))
+value <- lapply(value,function(x) as.numeric(x))
+my_df <- as.data.frame(t(do.call(cbind, value)))
+
+# combined data file have 10299 samples and each sample has 561 values
+dim(my_df)
+
+# combined the test subject and activity information with the test value
+merged_df <- cbind(merged_label, my_df)
+dim(merged_df)
+
+# Create grouped analysis
+summary_df <- merged_df %>% group_by(Subject,Activity) %>%
+    select(-Subject,-Activity,-Activity_labels) %>% 
+    summarize_all(list(mean=mean, sd=sd))
+
+# Final result including 180 rows which are 30 test object in 6 different activities,
+# 561 grouped mean  and 561 grouped standard deviation
+summary_df
+```
+
+
