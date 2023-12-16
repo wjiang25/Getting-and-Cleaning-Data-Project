@@ -12,6 +12,7 @@ output:
 ```{r }
 
 ```
+Please check CodeBook.pdf to see complete code and result
 
 1.dowload and unzip the data files from " 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
@@ -25,6 +26,8 @@ folder. I also use the "activity_albels.txt" to match activities type to make ta
 one for labels of those activities, rest are data  data captured in 561 time frame.
 
 5.Group the merged and cleaned data by test object and their activities, use summarize() to find the mean and sd of the data
+
+
 
 
 
